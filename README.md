@@ -1,6 +1,6 @@
-# GuruMarg - Educational Guidance Platform
+# GuruMarg - AI-Powered Career Guidance Platform
 
-A comprehensive educational guidance platform that helps students make informed decisions about their academic and career paths through AI-powered assessments, college matching, career guidance, and scholarship discovery.
+A comprehensive educational guidance platform that helps students make informed decisions about their academic and career paths through AI-powered assessments, college matching, career guidance, and scholarship discovery with a flexible subscription model.
 
 ## 🚀 Features
 
@@ -10,6 +10,21 @@ A comprehensive educational guidance platform that helps students make informed 
 - **Career Guidance**: Personalized career recommendations based on market trends and goals
 - **Scholarship Navigator**: Discover scholarships and financial aid opportunities
 - **User Profiles**: Track progress, goals, and achievements
+- **AI Chat Assistant**: Gemini-powered career guidance conversations
+- **Subscription Plans**: Free, Pro, and Max tiers with feature gating
+
+### 🔐 Authentication System
+- **OTP-based Authentication**: Secure passwordless login via email
+- **Supabase Integration**: Real-time user management and data storage
+- **Profile Management**: Comprehensive user profiles with subscription status
+- **Session Management**: Secure authentication state handling
+
+### 💳 Subscription Model
+- **Free Plan**: Basic features with limited usage
+- **Pro Plan (₹299/month)**: Advanced features and unlimited access
+- **Max Plan (₹599/month)**: Premium features with personal mentorship
+- **Feature Gating**: Smart access control based on subscription tier
+- **Usage Tracking**: Monitor feature usage and limits
 
 ### Assessment Types
 - Class 10 Stream Selector
@@ -24,8 +39,10 @@ A comprehensive educational guidance platform that helps students make informed 
 - **Colleges**: Search and filter colleges with detailed information
 - **Careers**: Explore career options with salary and growth data
 - **Scholarships**: Find and apply for scholarships
-- **Profile**: User dashboard with progress tracking
-- **Authentication**: Login and signup with form validation
+- **Profile**: User dashboard with progress tracking and subscription status
+- **Pricing**: Subscription plans comparison and management
+- **Settings**: API configuration and subscription management
+- **Authentication**: OTP-based login and signup
 
 ## 🛠️ Technology Stack
 
@@ -38,11 +55,18 @@ A comprehensive educational guidance platform that helps students make informed 
 - **Lucide React** for icons
 - **React Hook Form** for form handling
 - **TanStack Query** for data fetching and caching
+- **Context API** for state management
 
 ### Backend & Database
 - **Supabase** for authentication and database
 - **PostgreSQL** for data storage
 - **Real-time subscriptions** for live updates
+- **OTP Authentication** for secure login
+
+### AI Integration
+- **Google Gemini API** for AI-powered career guidance
+- **IndexedDB** for local API key storage
+- **Dynamic content generation** based on user queries
 
 ### Development Tools
 - **ESLint** for code linting
@@ -84,6 +108,7 @@ The application is fully responsive and optimized for:
 - **Card-based layouts** with subtle shadows
 - **Smooth transitions** and hover effects
 - **Accessible form controls** with proper labeling
+- **Feature gates** with upgrade prompts
 
 ## 🚀 Getting Started
 
@@ -91,13 +116,14 @@ The application is fully responsive and optimized for:
 - Node.js 18+ 
 - npm or yarn
 - Supabase account (for backend services)
+- Google Gemini API key (for AI features)
 
 ### Installation
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
-   cd stream-select-smart-main
+   git clone https://github.com/rahul-error/gurumarg_demo_unit.git
+   cd gurumarg_demo_unit
    ```
 
 2. **Install dependencies**
@@ -124,6 +150,11 @@ The application is fully responsive and optimized for:
 5. **Open your browser**
    Navigate to `http://localhost:5173`
 
+6. **Configure Gemini API**
+   - Go to Settings page
+   - Add your Gemini API key
+   - Key is stored locally in IndexedDB
+
 ### Building for Production
 
 ```bash
@@ -137,6 +168,7 @@ npm run preview
 src/
 ├── components/          # Reusable UI components
 │   ├── ui/             # Base UI components (buttons, cards, etc.)
+│   ├── FeatureGate.tsx # Subscription feature gating
 │   ├── hero-section.tsx
 │   ├── features-section.tsx
 │   └── cta-section.tsx
@@ -150,62 +182,91 @@ src/
 │   ├── CareerCompass.tsx
 │   ├── CollegeDetails.tsx
 │   ├── CareerDetails.tsx
-│   ├── Profile.tsx
-│   ├── Login.tsx
-│   └── Signup.tsx
+│   ├── Profile.tsx     # User dashboard with subscription
+│   ├── Pricing.tsx     # Subscription plans
+│   ├── Settings.tsx    # API and subscription management
+│   ├── Login.tsx       # OTP-based login
+│   ├── Signup.tsx      # OTP-based signup
+│   └── VerifyOtp.tsx   # OTP verification
 ├── hooks/              # Custom React hooks
-│   ├── useApi.ts       # API integration hooks
+│   ├── useApi.tsx      # API integration and auth
+│   ├── useSubscription.tsx # Subscription management
+│   ├── useGemini.ts    # Gemini AI integration
 │   └── use-mobile.tsx
+├── types/              # TypeScript type definitions
+│   └── subscription.ts # Subscription types and data
 ├── services/           # API services and data fetching
 │   └── api.ts
 ├── integrations/       # Third-party integrations
 │   └── supabase/
 ├── lib/                # Utility functions
-│   └── utils.ts
+│   └── utils.ts        # IndexedDB helpers
 ├── assets/             # Static assets
 └── index.css           # Global styles and design system
 ```
 
 ## 🔧 API Integration
 
-### Mock Data
-The application includes comprehensive mock data for:
-- Colleges and universities
-- Career options with salary data
-- Scholarships and financial aid
-- Assessment questions and results
+### Authentication Flow
+1. **User Registration**: Email-based signup with OTP verification
+2. **OTP Verification**: Secure one-time password confirmation
+3. **Session Management**: Automatic login state handling
+4. **Profile Creation**: User data stored in Supabase
 
-### Real API Integration
-- **Supabase** for user authentication
-- **Database tables** for user profiles, assessment results
-- **Real-time updates** for collaborative features
+### AI Integration
+- **Gemini API**: AI-powered career guidance and content generation
+- **Local Storage**: API key stored securely in IndexedDB
+- **Dynamic Responses**: Context-aware AI conversations
+- **Feature Gating**: AI usage limits based on subscription plan
+
+### Subscription System
+- **Plan Management**: Free, Pro, and Max tiers
+- **Feature Gating**: Access control based on subscription
+- **Usage Tracking**: Monitor feature usage and limits
+- **Local Storage**: Subscription data in IndexedDB
 
 ### Data Flow
 1. **Client-side routing** with React Router
 2. **Data fetching** with TanStack Query
-3. **State management** with React hooks
+3. **State management** with React Context
 4. **Form handling** with React Hook Form
 5. **API calls** through custom service layer
+6. **Real-time updates** with Supabase subscriptions
 
 ## 🎯 Key Features Implementation
+
+### Subscription System
+- **Three-tier pricing**: Free (₹0), Pro (₹299), Max (₹599)
+- **Feature gating**: Smart access control with upgrade prompts
+- **Usage tracking**: Monitor and limit feature usage
+- **Plan management**: Upgrade, downgrade, and cancel subscriptions
 
 ### Assessment System
 - **Multi-step forms** with progress tracking
 - **Question randomization** for variety
 - **Result calculation** with personalized recommendations
 - **Progress saving** and resume functionality
+- **Subscription-based access** with usage limits
+
+### AI Chat Assistant
+- **Gemini integration** for intelligent responses
+- **Context-aware conversations** about career guidance
+- **Usage limits** based on subscription plan
+- **Local API key storage** for privacy
 
 ### College Search
 - **Advanced filtering** by location, type, stream
 - **Search functionality** with real-time results
 - **Detailed college pages** with comprehensive information
 - **Comparison tools** for multiple colleges
+- **Subscription-based advanced features**
 
 ### Career Guidance
 - **Career exploration** with detailed information
 - **Salary insights** and growth projections
 - **Skill requirements** and development paths
 - **Company information** and job market data
+- **AI-powered recommendations**
 
 ### User Experience
 - **Responsive design** across all devices
@@ -213,6 +274,39 @@ The application includes comprehensive mock data for:
 - **Accessible components** with proper ARIA labels
 - **Loading states** and error handling
 - **Form validation** with helpful error messages
+- **Feature upgrade prompts** with clear value proposition
+
+## 💳 Subscription Plans
+
+### 🆓 Free Plan (₹0/month)
+- 3 Basic Assessments per month
+- Basic College & Career Search
+- 5 AI Chat conversations per month
+- Basic Profile management
+- PDF Export of results
+- Basic Scholarship Listings
+
+### ⚡ Pro Plan (₹299/month)
+- Unlimited Assessments
+- Advanced College Search with filters & analytics
+- Career Roadmaps & skill development plans
+- AI-powered Scholarship Matching
+- Unlimited AI Chat
+- Advanced Profile with portfolio
+- Multiple Export Formats (PDF, Excel, Word)
+- Priority Support (24-hour response)
+- Exclusive Webinars
+
+### 👑 Max Plan (₹599/month)
+- Everything in Pro
+- Personal Career Mentor (2 sessions/month)
+- Resume Review (3 reviews/month)
+- Interview Preparation (2 sessions/month)
+- Smart Job Alerts
+- Networking Events access
+- Certification Tracks
+- Phone Support
+- Custom Reports
 
 ## 🧪 Testing
 
@@ -233,21 +327,23 @@ npm run build
 - **Swipe gestures** for navigation
 - **Optimized images** with lazy loading
 - **Fast loading** with code splitting
-- **Offline support** with service workers (planned)
+- **Responsive subscription UI** for mobile users
 
 ## 🔒 Security
 
+- **OTP Authentication** for secure passwordless login
 - **Input validation** on both client and server
 - **XSS protection** with proper sanitization
-- **CSRF protection** with secure tokens
+- **Local API key storage** in IndexedDB
 - **Secure authentication** with Supabase Auth
 - **Environment variables** for sensitive data
+- **Feature gating** to prevent unauthorized access
 
 ## 🚀 Deployment
 
 ### Vercel (Recommended)
 1. Connect your GitHub repository
-2. Set environment variables
+2. Set environment variables (Supabase credentials)
 3. Deploy automatically on push
 
 ### Netlify
@@ -281,15 +377,26 @@ For support and questions:
 
 ## 🔮 Future Enhancements
 
-- **AI-powered recommendations** with machine learning
-- **Video assessments** and interactive content
-- **Social features** for peer connections
-- **Mobile app** with React Native
-- **Advanced analytics** and reporting
-- **Integration** with educational institutions
-- **Multi-language support**
-- **Accessibility improvements**
+- **Payment Integration**: Stripe/Razorpay for subscription billing
+- **Advanced AI Features**: More sophisticated career recommendations
+- **Video Assessments**: Interactive video-based evaluations
+- **Social Features**: Peer connections and study groups
+- **Mobile App**: React Native mobile application
+- **Advanced Analytics**: Detailed usage and performance metrics
+- **Integration**: Direct integration with educational institutions
+- **Multi-language Support**: Internationalization
+- **Accessibility Improvements**: Enhanced accessibility features
+- **Real-time Collaboration**: Live assessment sessions
+- **Gamification**: Points, badges, and achievements system
+
+## 🎯 Business Model
+
+- **Freemium Strategy**: Free plan attracts users, paid plans provide value
+- **Student Discounts**: 20% off for verified students
+- **Flexible Pricing**: Monthly and annual billing options
+- **Feature-based Monetization**: Clear value proposition for each tier
+- **Scalable Architecture**: Ready for growth and expansion
 
 ---
 
-Built with ❤️ for students seeking educational guidance and career clarity.
+Built with ❤️ for students seeking educational guidance and career clarity. Powered by AI and designed for the future of education.
