@@ -59,6 +59,12 @@ const Navigation = () => {
               Scholarships
             </button>
             <button 
+              onClick={() => handleNavigation('/pricing')}
+              className={`transition-smooth ${isActive('/pricing') ? 'text-foreground font-medium' : 'text-muted-foreground hover:text-foreground'}`}
+            >
+              Pricing
+            </button>
+            <button 
               onClick={() => handleNavigation('/settings')}
               className={`transition-smooth ${isActive('/settings') ? 'text-foreground font-medium' : 'text-muted-foreground hover:text-foreground'}`}
             >
@@ -121,6 +127,12 @@ const Navigation = () => {
                 className={`text-left transition-smooth ${isActive('/scholarships') ? 'text-foreground font-medium' : 'text-muted-foreground hover:text-foreground'}`}
               >
                 Scholarships
+              </button>
+              <button 
+                onClick={() => handleNavigation('/pricing')}
+                className={`text-left transition-smooth ${isActive('/pricing') ? 'text-foreground font-medium' : 'text-muted-foreground hover:text-foreground'}`}
+              >
+                Pricing
               </button>
               <button 
                 onClick={() => handleNavigation('/settings')}

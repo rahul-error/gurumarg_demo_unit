@@ -20,13 +20,19 @@ import {
   LogOut,
   CheckCircle,
   Clock,
-  Star
+  Star,
+  Crown,
+  Zap,
+  ArrowRight
 } from "lucide-react";
 import Navigation from "@/components/ui/navigation";
+import { useSubscription } from "@/hooks/useSubscription";
+import { getPlanById } from "@/types/subscription";
 
 const Profile = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("overview");
+  const { subscription } = useSubscription();
 
   // Mock user data - in real app, this would come from API
   const user = {
@@ -186,6 +192,21 @@ const Profile = () => {
                       <span>{user.location}</span>
                     </div>
                     <Badge variant="outline">{user.class} - {user.stream}</Badge>
+                    {subscription && (
+                      <Badge 
+                        variant={subscription.plan === 'free' ? 'outline' : 'default'}
+                        className={subscription.plan !== 'free' ? 'bg-primary text-white' : ''}
+                      >
+                        {subscription.plan === 'free' ? (
+                          <User className="h-3 w-3 mr-1" />
+                        ) : subscription.plan === 'pro' ? (
+                          <Zap className="h-3 w-3 mr-1" />
+                        ) : (
+                          <Crown className="h-3 w-3 mr-1" />
+                        )}
+                        {subscription.plan.charAt(0).toUpperCase() + subscription.plan.slice(1)} Plan
+                      </Badge>
+                    )}
                   </div>
                 </div>
               </div>
@@ -255,8 +276,9 @@ const Profile = () => {
         <section className="py-8">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-8">
-              <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4">
+              <TabsList className="grid w-full grid-cols-2 lg:grid-cols-5">
                 <TabsTrigger value="overview">Overview</TabsTrigger>
+                <TabsTrigger value="subscription">Subscription</TabsTrigger>
                 <TabsTrigger value="assessments">Assessments</TabsTrigger>
                 <TabsTrigger value="goals">Goals</TabsTrigger>
                 <TabsTrigger value="achievements">Achievements</TabsTrigger>
@@ -320,6 +342,107 @@ const Profile = () => {
                     </CardContent>
                   </Card>
                 </div>
+              </TabsContent>
+
+              <TabsContent value="subscription" className="space-y-8">
+                {subscription && (
+                  <div className="grid lg:grid-cols-2 gap-8">
+                    <Card>
+                      <CardHeader>
+                        <CardTitle className="flex items-center space-x-2">
+                          {subscription.plan === 'free' ? (
+                            <User className="h-5 w-5" />
+                          ) : subscription.plan === 'pro' ? (
+                            <Zap className="h-5 w-5" />
+                          ) : (
+                            <Crown className="h-5 w-5" />
+                          )}
+                          <span>Current Plan</span>
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <div className="flex items-center justify-between">
+                          <span className="text-muted-foreground">Plan</span>
+                          <Badge 
+                            variant={subscription.plan === 'free' ? 'outline' : 'default'}
+                            className={subscription.plan !== 'free' ? 'bg-primary text-white' : ''}
+                          >
+                            {subscription.plan.charAt(0).toUpperCase() + subscription.plan.slice(1)}
+                          </Badge>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span className="text-muted-foreground">Status</span>
+                          <Badge 
+                            variant={subscription.status === 'active' ? 'default' : 'secondary'}
+                            className={subscription.status === 'active' ? 'bg-green-100 text-green-800' : ''}
+                          >
+                            {subscription.status.charAt(0).toUpperCase() + subscription.status.slice(1)}
+                          </Badge>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span className="text-muted-foreground">Started</span>
+                          <span className="font-medium">
+                            {new Date(subscription.startDate).toLocaleDateString()}
+                          </span>
+                        </div>
+                        {subscription.endDate && (
+                          <div className="flex items-center justify-between">
+                            <span className="text-muted-foreground">Expires</span>
+                            <span className="font-medium">
+                              {new Date(subscription.endDate).toLocaleDateString()}
+                            </span>
+                          </div>
+                        )}
+                        <div className="flex items-center justify-between">
+                          <span className="text-muted-foreground">Auto Renew</span>
+                          <span className="font-medium">
+                            {subscription.autoRenew ? 'Yes' : 'No'}
+                          </span>
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>Plan Features</CardTitle>
+                        <CardDescription>
+                          Features available in your current plan
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="space-y-3">
+                          {subscription.features.slice(0, 6).map((featureId) => {
+                            const planDetails = getPlanById(subscription.plan);
+                            const feature = planDetails?.features.find(f => f.id === featureId);
+                            return feature ? (
+                              <div key={featureId} className="flex items-center space-x-3">
+                                <CheckCircle className="h-4 w-4 text-green-500" />
+                                <div className="flex-1">
+                                  <p className="text-sm font-medium">{feature.name}</p>
+                                  <p className="text-xs text-muted-foreground">{feature.description}</p>
+                                </div>
+                              </div>
+                            ) : null;
+                          })}
+                          {subscription.features.length > 6 && (
+                            <p className="text-sm text-muted-foreground">
+                              +{subscription.features.length - 6} more features
+                            </p>
+                          )}
+                        </div>
+                        <div className="mt-6 pt-4 border-t">
+                          <Button 
+                            className="w-full gradient-primary text-white border-0 shadow-elegant"
+                            onClick={() => navigate('/pricing')}
+                          >
+                            {subscription.plan === 'free' ? 'Upgrade Plan' : 'Manage Subscription'}
+                            <ArrowRight className="ml-2 h-4 w-4" />
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                )}
               </TabsContent>
 
               <TabsContent value="assessments" className="space-y-6">

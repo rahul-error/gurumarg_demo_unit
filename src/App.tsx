@@ -18,7 +18,9 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Settings from "./pages/Settings";
 import VerifyOtp from "./pages/VerifyOtp";
+import Pricing from "./pages/Pricing";
 import { ApiKeyProvider } from "./hooks/useApi";
+import { SubscriptionProvider } from "./hooks/useSubscription";
 
 const queryClient = new QueryClient();
 
@@ -29,7 +31,8 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <ApiKeyProvider>
-          <Routes>
+          <SubscriptionProvider>
+            <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/assessments" element={<Assessments />} />
           <Route path="/colleges" element={<Colleges />} />
@@ -43,10 +46,12 @@ const App = () => (
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/verify-otp" element={<VerifyOtp />} />
+          <Route path="/pricing" element={<Pricing />} />
           <Route path="/settings" element={<Settings />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
           </Routes>
+          </SubscriptionProvider>
         </ApiKeyProvider>
       </BrowserRouter>
     </TooltipProvider>
